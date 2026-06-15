@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem("adminToken", token); 
     
     const decoded = jwtDecode(token);
-    setUser({ id: decoded.id, username: decoded.username || decoded.email });
+    setUser({ id: decoded.id,token: token, username: decoded.username || decoded.email });
   }
 
   async function logout() {

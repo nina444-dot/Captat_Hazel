@@ -4,6 +4,7 @@ import api from "../api/axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useAuth } from "../context/AuthContext"; 
+import { useContext } from "react";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ function Dashboard() {
   const [editNom, setEditNom] = useState("");
   const [editPrix, setEditPrix] = useState("");
   const [editDetails, setEditDetails] = useState("");
+  const {user} = useAuth();
 
   useEffect(() => {
     fetchFormules();
@@ -59,7 +61,11 @@ function Dashboard() {
       details: details,
     };
     try {
-      await api.post("/formules", newFormule);
+      await api.post("/formules", newFormule, {
+                headers: {
+                    Authorization: 'Bearer '+ user.token
+                }
+            });
       setNom("");
       setPrix("");
       setDetails("");
@@ -73,7 +79,11 @@ function Dashboard() {
   const handleDelete = async (id) => {
     if (window.confirm("Voulez-vous vraiment supprimer définitivement cette formule de la base de données ?")) {
       try {
-        await api.delete(`/formules/${id}`);
+        await api.delete(`/formules/${id}`,  {
+                headers: {
+                    Authorization: 'Bearer '+ user.token
+                }
+            });
         fetchFormules(); 
       } catch (error) {
         console.error(error);
@@ -104,7 +114,11 @@ function Dashboard() {
         nom: editNom,
         prix: editPrix.replace("€", ""),
         details: editDetails,
-      });
+      },  {
+                headers: {
+                    Authorization: 'Bearer '+ user.token
+                }
+            });
       setIsModalOpen(false); 
       fetchFormules(); 
     } catch (error) {

@@ -1,4 +1,5 @@
 import express from "express";
+import {authMiddleware} from "../middlewares/auth.middleware.js";
 import { 
     getAllFormules, 
     getFormulesBySeanceTitre, 
@@ -12,8 +13,8 @@ const router = express.Router();
 router.get("/", getAllFormules);
 router.get("/seance/:titre", getFormulesBySeanceTitre);
 
-router.post("/", addFormule);
-router.put("/:id", editFormule);
-router.delete("/:id", removeFormule);
+router.post("/", authMiddleware, addFormule);
+router.put("/:id", authMiddleware, editFormule);
+router.delete("/:id", authMiddleware, removeFormule);
 
 export default router;
