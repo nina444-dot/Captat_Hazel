@@ -16,6 +16,7 @@ import photoMariage from '../assets/seance-mariage.webp';
 import photoCouple from '../assets/seance-couple.webp';
 import photoFemme from '../assets/seance-femme.webp';
 import photoNaissance from '../assets/seance-naissance.webp';
+import photochristel from '../assets/photochristel.webp';
 import mini1 from '../assets/mini1.webp';
 import mini2 from '../assets/mini2.webp';
 import mini3 from '../assets/mini3.webp';
@@ -183,7 +184,7 @@ const Accueil = () => {
    
    <div className="aspect-[3/4] bg-gray-200 shadow-xl mt-12 md:mt-0 overflow-hidden rounded-[5px]">
       <img 
-         src={photoFemme} 
+         src={photochristel} 
          alt="Portrait de Christel" 
          className="w-full h-full object-cover" 
       />
