@@ -32,6 +32,13 @@ import modaleFemme4 from '../assets/modale-femme4.webp';
 import modaleFemme5 from '../assets/modale-femme5.webp';
 import modaleFemme6 from '../assets/modale-femme6.webp';
 import modaleFemme7 from '../assets/modale-femme7.webp';
+import modaleNouveauNe1 from '../assets/modale-nouveaune1.webp';
+import modaleNouveauNe2 from '../assets/modale-nouveaune2.webp';
+import modaleNouveauNe3 from '../assets/modale-nouveaune3.webp';
+import modaleNouveauNe4 from '../assets/modale-nouveaune4.webp';
+import modaleNouveauNe5 from '../assets/modale-nouveaune5.webp';
+import modaleNouveauNe6 from '../assets/modale-nouveaune6.webp';
+import modaleNouveauNe7 from '../assets/modale-nouveaune7.webp';
 
 const GALERIES_PAR_CATEGORIE = {
   "Famille": [
@@ -50,6 +57,10 @@ const GALERIES_PAR_CATEGORIE = {
     modaleFemme1, modaleFemme2, modaleFemme3, modaleFemme4, 
     modaleFemme5, modaleFemme6, modaleFemme7
   ],
+  "Nouveau né": [
+    modaleNouveauNe1, modaleNouveauNe2, modaleNouveauNe3, modaleNouveauNe4, 
+    modaleNouveauNe5, modaleNouveauNe6, modaleNouveauNe7
+  ],
 };
 
 const TarifsModale = ({ isOpen, onClose, titre }) => {
@@ -58,19 +69,27 @@ const TarifsModale = ({ isOpen, onClose, titre }) => {
   const modalScrollRef = useRef(null);
 
   useEffect(() => {
-    if (isOpen && titre) {
-      setLoading(true);
-      api.get(`/seances/${encodeURIComponent(titre)}/formules`)
-        .then((res) => {
-          setFormules(res.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Erreur API:", err);
-          setLoading(false);
-        });
-    }
-  }, [isOpen, titre]);
+  if (isOpen && titre) {
+    setLoading(true);
+    api.get(`/seances/${encodeURIComponent(titre)}/formules`)
+      .then((res) => {
+        // 1. Affiche dans la console ce que PHP envoie réellement
+        console.log("Réponse WampServer :", res.data);
+
+        // 2. Récupère la donnée
+        const data = res.data.formules || res.data.data || res.data;
+
+        // 3. Ne met dans 'formules' QUE si c'est un tableau, sinon un tableau vide []
+        setFormules(Array.isArray(data) ? data : []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Erreur API:", err);
+        setFormules([]); // Sécurité en cas d'erreur HTTP (404, 500)
+        setLoading(false);
+      });
+  }
+}, [isOpen, titre]);
 
   const scrollModal = (direction) => {
     if (modalScrollRef.current) {
